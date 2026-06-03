@@ -246,6 +246,11 @@ function contentType(filePath) {
   }[extension] || 'application/octet-stream';
 }
 
-server.listen(port, () => {
-  console.log(`Clemdrop is running on http://localhost:${port}`);
+server.listen(port, '0.0.0.0', () => {
+  const publicUrl =
+    process.env.RENDER_EXTERNAL_URL ||
+    'https://clemdrop.onrender.com';
+
+  console.log(`Clemdrop is running on ${publicUrl}`);
+  console.log(`Listening on port ${port}`);
 });
