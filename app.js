@@ -11,7 +11,16 @@ const rooms = new Map();
 
 const server = http.createServer((request, response) => {
   const url = new URL(request.url, `http://${request.headers.host}`);
-  const pathname = url.pathname === '/' ? '/index.html' : url.pathname;
+
+  if (url.pathname === '/') {
+    response.writeHead(200, {
+      'Content-Type': 'text/plain; charset=utf-8'
+    });
+    response.end('Clemdrop server is online');
+    return;
+  }
+
+  const pathname = url.pathname;
   const filePath = path.normalize(path.join(root, pathname));
 
   if (!filePath.startsWith(root)) {
@@ -26,7 +35,11 @@ const server = http.createServer((request, response) => {
       response.end('Not found');
       return;
     }
-    response.writeHead(200, { 'Content-Type': contentType(filePath) });
+
+    response.writeHead(200, {
+      'Content-Type': contentType(filePath)
+    });
+
     response.end(content);
   });
 });
